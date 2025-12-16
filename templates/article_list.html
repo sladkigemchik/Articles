@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статьи</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .article { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .article h2 { margin-top: 0; }
+        .meta { color: #666; font-size: 0.9em; }
+        .actions { margin-top: 10px; }
+        .btn { 
+            display: inline-block; 
+            padding: 8px 15px; 
+            background: #007bff; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 3px; 
+            margin-right: 10px; 
+        }
+        .btn-create { background: #28a745; }
+        .btn-edit { background: #ffc107; color: black; }
+    </style>
+</head>
+<body>
+    <h1>Все статьи</h1>
+    
+    <a href="{% url 'article_create' %}" class="btn btn-create">+ Создать статью</a>
+    <hr>
+    
+    {% if articles %}
+        {% for article in articles %}
+        <div class="article">
+            <h2>{{ article.title }}</h2>
+            <p class="meta">
+                Создано: {{ article.created_at|date:"d.m.Y H:i" }} | 
+                Обновлено: {{ article.updated_at|date:"d.m.Y H:i" }}
+            </p>
+            <p>{{ article.content|truncatechars:200 }}</p>
+            <div class="actions">
+                <a href="{% url 'article_edit' article.id %}" class="btn btn-edit">Редактировать</a>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Статей пока нет. <a href="{% url 'article_create' %}">Создайте первую!</a></p>
+    {% endif %}
+</body>
+</html>
